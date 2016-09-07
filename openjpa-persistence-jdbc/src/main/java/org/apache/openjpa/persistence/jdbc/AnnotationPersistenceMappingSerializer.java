@@ -80,6 +80,7 @@ import org.apache.openjpa.meta.SequenceMetaData;
 import org.apache.openjpa.persistence.AnnotationBuilder;
 import org.apache.openjpa.persistence.AnnotationPersistenceMetaDataSerializer;
 import org.apache.openjpa.persistence.PersistenceStrategy;
+import java.util.Objects;
 
 
 /**

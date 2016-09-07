@@ -36,6 +36,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import org.apache.openjpa.conf.SchemaGenerationSource;
+import org.apache.openjpa.lib.util.StringUtil;
 import org.apache.openjpa.jdbc.ExternalSchema;
 import org.apache.openjpa.jdbc.conf.JDBCConfiguration;
 import org.apache.openjpa.jdbc.conf.JDBCConfigurationImpl;

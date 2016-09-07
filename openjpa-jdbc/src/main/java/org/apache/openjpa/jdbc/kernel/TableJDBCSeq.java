@@ -28,7 +28,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import jakarta.transaction.NotSupportedException;
 
-import org.apache.openjpa.conf.OpenJPAConfiguration;
+import org.apache.openjpa.lib.util.StringUtil;
 import org.apache.openjpa.jdbc.conf.JDBCConfiguration;
 import org.apache.openjpa.jdbc.conf.JDBCConfigurationImpl;
 import org.apache.openjpa.jdbc.identifier.DBIdentifier;

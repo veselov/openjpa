@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.apache.openjpa.lib.util.ClassUtil;
+import org.apache.openjpa.lib.util.StringUtil;
 
 /**
  * Helper class to stringify annotation declarations.

@@ -20,6 +20,8 @@ package org.apache.openjpa.meta;
 
 import java.util.Objects;
 
+import org.apache.openjpa.lib.util.StringUtil;
+
 /**
  * Contains metadata about an xml element or attribute
  *

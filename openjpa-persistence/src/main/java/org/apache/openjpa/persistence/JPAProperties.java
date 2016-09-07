@@ -25,6 +25,7 @@ import java.util.Map;
 import jakarta.persistence.CacheRetrieveMode;
 import jakarta.persistence.CacheStoreMode;
 
+import org.apache.openjpa.lib.util.StringUtil;
 import org.apache.openjpa.kernel.DataCacheRetrieveMode;
 import org.apache.openjpa.kernel.DataCacheStoreMode;
 import org.apache.openjpa.lib.util.StringUtil;

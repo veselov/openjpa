@@ -140,6 +140,7 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.StoredProcedureParameter;
 import jakarta.persistence.Version;
 
+import org.apache.openjpa.lib.util.StringUtil;
 import org.apache.openjpa.conf.OpenJPAConfiguration;
 import org.apache.openjpa.event.BeanLifecycleCallbacks;
 import org.apache.openjpa.event.LifecycleCallbacks;

@@ -20,6 +20,7 @@ package org.apache.openjpa.jdbc.identifier;
 
 import java.io.Serializable;
 
+import org.apache.openjpa.lib.util.StringUtil;
 import org.apache.openjpa.lib.identifier.Identifier;
 import org.apache.openjpa.lib.identifier.IdentifierImpl;
 import org.apache.openjpa.lib.util.StringUtil;

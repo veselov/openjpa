@@ -25,6 +25,7 @@ import java.security.AccessController;
 import java.security.PrivilegedActionException;
 import java.util.Properties;
 
+import org.apache.openjpa.lib.util.StringUtil;
 import org.apache.openjpa.jdbc.conf.JDBCConfiguration;
 import org.apache.openjpa.jdbc.conf.JDBCConfigurationImpl;
 import org.apache.openjpa.jdbc.meta.PropertiesReverseCustomizer;
