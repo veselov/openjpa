@@ -2273,7 +2273,7 @@ public class ReverseMappingTool
         @Override
         public Set getImportPackages() {
             Set pkgs = super.getImportPackages();
-            pkgs.add("javax.persistence");
+            pkgs.add("jakarta.persistence");
             return pkgs;
         }
 

@@ -25,7 +25,7 @@ import static org.apache.openjpa.persistence.jest.Constants.MIME_TYPE_XML;
 import java.io.IOException;
 import java.net.URLDecoder;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.openjpa.lib.util.Localizer.Message;
 import org.w3c.dom.Document;

@@ -83,7 +83,7 @@
                     </exclusions>
                 </dependency>
                 <dependency>
-                    <groupId>javax.validation</groupId>
+                    <groupId>jakarta.validation</groupId>
                     <artifactId>validation-api</artifactId>
                     <version>1.0.0.GA</version>
                     <scope>test</scope>
@@ -92,7 +92,7 @@
                 <dependency>
                     <groupId>org.hibernate</groupId>
                     <artifactId>hibernate-validator</artifactId>
-                    <version>4.0.2.GA</version>
+                    <version>7.0.4.Final</version>
                     <scope>test</scope>
                     <exclusions>
                         <!-- force usage of the geronimo-jpa_2.1_spec -->
@@ -102,7 +102,7 @@
                         </exclusion>
                         <!-- force usage of the RI API level above -->
                         <exclusion>
-                            <groupId>javax.validation</groupId>
+                            <groupId>jakarta.validation</groupId>
                             <artifactId>validation-api</artifactId>
                         </exclusion>
                     </exclusions>

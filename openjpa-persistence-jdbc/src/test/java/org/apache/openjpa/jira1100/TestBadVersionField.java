@@ -20,12 +20,12 @@ package org.apache.openjpa.jira1100;
 
 import java.math.BigDecimal;
 
-import javax.persistence.Entity;
-import javax.persistence.EntityManager;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Version;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 
 import org.apache.openjpa.persistence.test.SingleEMFTestCase;
 

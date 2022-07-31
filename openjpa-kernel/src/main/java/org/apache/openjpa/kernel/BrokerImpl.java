@@ -41,8 +41,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.locks.ReentrantLock;
 
-import javax.transaction.Status;
-import javax.transaction.Synchronization;
+import jakarta.transaction.Status;
+import jakarta.transaction.Synchronization;
 
 import org.apache.commons.collections4.iterators.IteratorChain;
 import org.apache.commons.collections4.map.AbstractReferenceMap.ReferenceStrength;
@@ -1595,7 +1595,7 @@ public class BrokerImpl implements Broker, FindCallbacks, Cloneable, Serializabl
         try {
             assertTransactionOperation();
 
-            javax.transaction.Transaction trans =
+            jakarta.transaction.Transaction trans =
                 _runtime.getTransactionManager().getTransaction();
             if (trans == null)
                 throw new InvalidStateException(_loc.get("null-trans"));
@@ -1622,7 +1622,7 @@ public class BrokerImpl implements Broker, FindCallbacks, Cloneable, Serializabl
         try {
             assertTransactionOperation();
 
-            javax.transaction.Transaction trans =
+            jakarta.transaction.Transaction trans =
                 _runtime.getTransactionManager().getTransaction();
             if (trans != null)
                 trans.rollback();
@@ -1688,7 +1688,7 @@ public class BrokerImpl implements Broker, FindCallbacks, Cloneable, Serializabl
             if ((_flags & FLAG_ACTIVE) == 0)
                 return false;
 
-            javax.transaction.Transaction trans =
+            jakarta.transaction.Transaction trans =
                 _runtime.getTransactionManager().getTransaction();
             if (trans == null)
                 return false;
@@ -1709,7 +1709,7 @@ public class BrokerImpl implements Broker, FindCallbacks, Cloneable, Serializabl
             if ((_flags & FLAG_ACTIVE) == 0)
                 return null;
 
-            javax.transaction.Transaction trans =
+            jakarta.transaction.Transaction trans =
                 _runtime.getTransactionManager().getTransaction();
             if (trans == null)
                 return null;
@@ -1747,7 +1747,7 @@ public class BrokerImpl implements Broker, FindCallbacks, Cloneable, Serializabl
      */
     private void setRollbackOnlyInternal(Throwable cause) {
         try {
-            javax.transaction.Transaction trans =
+            jakarta.transaction.Transaction trans =
                 _runtime.getTransactionManager().getTransaction();
             if (trans == null)
                 throw new InvalidStateException(_loc.get("null-trans"));

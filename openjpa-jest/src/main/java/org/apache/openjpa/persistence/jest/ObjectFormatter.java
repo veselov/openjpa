@@ -24,8 +24,8 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 
-import javax.persistence.metamodel.Metamodel;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.persistence.metamodel.Metamodel;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.openjpa.kernel.OpenJPAStateManager;
 

@@ -21,7 +21,7 @@ package org.apache.openjpa.persistence.meta.common.apps;
 
 import java.util.UUID;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 
 import org.apache.openjpa.persistence.Externalizer;
 import org.apache.openjpa.persistence.Factory;

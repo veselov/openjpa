@@ -22,8 +22,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletException;
 
 import org.apache.openjpa.trader.client.TradingServiceAdapter;
 import org.apache.openjpa.trader.domain.Ask;

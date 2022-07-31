@@ -17,12 +17,12 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.persistence.EntityManager;
-import javax.persistence.LockModeType;
-import javax.persistence.LockTimeoutException;
-import javax.persistence.PessimisticLockException;
-import javax.persistence.Query;
-import javax.persistence.QueryTimeoutException;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.LockModeType;
+import jakarta.persistence.LockTimeoutException;
+import jakarta.persistence.PessimisticLockException;
+import jakarta.persistence.Query;
+import jakarta.persistence.QueryTimeoutException;
 
 import org.apache.openjpa.jdbc.conf.JDBCConfiguration;
 import org.apache.openjpa.jdbc.sql.DBDictionary;
@@ -80,7 +80,7 @@ public class TestTimeoutException extends SingleEMFTestCase {
         final Query query = em2.createQuery("select p from PObject p");
         query.setLockMode(LockModeType.PESSIMISTIC_WRITE);
         long timeout = 1000;
-        query.setHint("javax.persistence.query.timeout", timeout);
+        query.setHint("jakarta.persistence.query.timeout", timeout);
         try {
             query.getResultList();
             fail("Expected " + QueryTimeoutException.class.getName());
@@ -115,7 +115,7 @@ public class TestTimeoutException extends SingleEMFTestCase {
         final long timeout = 1000;
         try {
             Map<String,Object> hint = new HashMap<>();
-            hint.put("javax.persistence.lock.timeout", timeout);
+            hint.put("jakarta.persistence.lock.timeout", timeout);
             em2.lock(entity2, LockModeType.PESSIMISTIC_WRITE, hint);
             fail("Expected " + PessimisticLockException.class.getName());
         } catch (Throwable t) {
@@ -147,8 +147,8 @@ public class TestTimeoutException extends SingleEMFTestCase {
         em2.getTransaction().begin();
         try {
             Map<String,Object> hint = new HashMap<>();
-            hint.put("javax.persistence.lock.timeout", timeout);
-            //em2.setProperty("javax.persistence.lock.timeout", timeout);
+            hint.put("jakarta.persistence.lock.timeout", timeout);
+            //em2.setProperty("jakarta.persistence.lock.timeout", timeout);
 
             em2.find(entityClass, oid, LockModeType.PESSIMISTIC_WRITE, hint);
             fail("Expected " + LockTimeoutException.class.getName());

@@ -26,12 +26,12 @@ import java.security.ProtectionDomain;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.persistence.EntityManager;
-import javax.persistence.spi.ClassTransformer;
-import javax.persistence.spi.LoadState;
-import javax.persistence.spi.PersistenceProvider;
-import javax.persistence.spi.PersistenceUnitInfo;
-import javax.persistence.spi.ProviderUtil;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.spi.ClassTransformer;
+import jakarta.persistence.spi.LoadState;
+import jakarta.persistence.spi.PersistenceProvider;
+import jakarta.persistence.spi.PersistenceUnitInfo;
+import jakarta.persistence.spi.ProviderUtil;
 
 import org.apache.openjpa.conf.BrokerValue;
 import org.apache.openjpa.conf.OpenJPAConfiguration;
@@ -60,7 +60,7 @@ import org.apache.openjpa.util.ClassResolver;
  * Bootstrapping class that allows the creation of a stand-alone
  * {@link EntityManager}.
  *
- * @see javax.persistence.Persistence#createEntityManagerFactory(String,Map)
+ * @see jakarta.persistence.Persistence#createEntityManagerFactory(String,Map)
  * @published
  */
 public class PersistenceProviderImpl
@@ -228,7 +228,7 @@ public class PersistenceProviderImpl
     @Override
     public void generateSchema(final PersistenceUnitInfo info, final Map map) {
         final Map runMap = map == null ? new HashMap<>() : new HashMap<>(map);
-        runMap.put("javax.persistence.schema-generation.database.action", "create");
+        runMap.put("jakarta.persistence.schema-generation.database.action", "create");
         final OpenJPAEntityManagerFactory factory = createContainerEntityManagerFactory(info, runMap);
         try {
             synchronizeMappings(factory);
@@ -240,7 +240,7 @@ public class PersistenceProviderImpl
     @Override
     public boolean generateSchema(final String persistenceUnitName, final Map map) {
         final Map runMap = map == null ? new HashMap<>() : new HashMap<>(map);
-        runMap.put("javax.persistence.schema-generation.database.action", "create");
+        runMap.put("jakarta.persistence.schema-generation.database.action", "create");
         final OpenJPAEntityManagerFactory factory = createEntityManagerFactory(persistenceUnitName, runMap);
         try {
             final Object obj = synchronizeMappings(factory);
@@ -371,7 +371,7 @@ public class PersistenceProviderImpl
 
     /**
      * This private worker method will attempt to setup the proper
-     * LifecycleEventManager type based on if the javax.validation APIs are
+     * LifecycleEventManager type based on if the jakarta.validation APIs are
      * available and a ValidatorImpl is required by the configuration.
      * @param log
      * @param conf

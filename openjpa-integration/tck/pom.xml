@@ -290,7 +290,7 @@
 
                         <!-- create the OpenJPA properties for the TCK run -->
                         <echo append="false" file="${openjpa.properties}">
-javax.persistence.provider: org.apache.openjpa.persistence.PersistenceProviderImpl
+jakarta.persistence.provider: org.apache.openjpa.persistence.PersistenceProviderImpl
 openjpa.ConnectionDriverName: ${db.driver}
 openjpa.ConnectionURL: ${db.url}
 openjpa.ConnectionUserName: ${db.username}

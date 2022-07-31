@@ -40,7 +40,7 @@
     <para>
     JPA 2.0 specification introduces a new API to define queries dynamically
     via construction of an object-based
-    <classname>javax.persistence.CriteriaQuery</classname> instance, rather
+    <classname>jakarta.persistence.CriteriaQuery</classname> instance, rather
     than string-based approach used in JPQL (Java Persistence Query Language).
     This dynamic query definition capability, referred as Criteria API, is
     based on the abstract persistent schema of the entities, their embedded

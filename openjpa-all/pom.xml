@@ -94,7 +94,7 @@
                             <transformers>
                                 <!-- Need to concatinate the services resources:
                                  org.apache.openjpa.lib.conf.ProductDerivation
-                                 javax.persistence.spi.PersistenceProvider
+                                 jakarta.persistence.spi.PersistenceProvider
                                  org.apache.openjpa.kernel.exps.ExpressionParser
                                 -->
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />

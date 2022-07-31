@@ -18,11 +18,11 @@
  */
 package org.apache.openjpa.persistence.jdbc;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.Persistence;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Persistence;
 
 import org.apache.openjpa.jdbc.meta.MappingRepository;
 import org.apache.openjpa.persistence.OpenJPAEntityManagerFactorySPI;

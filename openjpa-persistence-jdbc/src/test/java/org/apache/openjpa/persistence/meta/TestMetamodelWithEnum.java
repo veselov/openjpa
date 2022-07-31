@@ -19,10 +19,10 @@
 
 package org.apache.openjpa.persistence.meta;
 
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
 import org.apache.openjpa.persistence.test.SingleEMFTestCase;
 

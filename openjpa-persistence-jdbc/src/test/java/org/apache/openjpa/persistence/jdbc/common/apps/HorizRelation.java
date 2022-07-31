@@ -25,7 +25,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Vector;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 
 import org.apache.commons.collections4.map.LinkedMap;
 

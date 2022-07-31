@@ -21,7 +21,7 @@
 <!-- ===========================================================      -->
 <%@page import="openbook.server.OpenBookService"%>
 <%@page import="openbook.domain.Book"%>
-<%@page import="javax.servlet.http.HttpServletRequest"%>
+<%@page import="jakarta.servlet.http.HttpServletRequest"%>
 <%@include file="header.jsp"%>
 
 <div id="help">

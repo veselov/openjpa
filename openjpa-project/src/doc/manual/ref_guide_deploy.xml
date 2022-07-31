@@ -51,7 +51,7 @@ deployment options.
                 </seealso>
             </indexterm>
             <para>
-The JPA Overview describes the <classname>javax.persistence.Persistence
+The JPA Overview describes the <classname>jakarta.persistence.Persistence
 </classname> class. You can use <classname>Persistence</classname> to obtain
 <classname>EntityManagerFactory</classname> instances, as demonstrated in
 <xref linkend="jpa_overview_persistence"/>. OpenJPA also extends
@@ -157,7 +157,7 @@ Map</classname>.
 <indexterm><primary>ManagedRuntime</primary></indexterm>
 In order to use global transactions, OpenJPA must be able to access the
 application server's <classname>
-javax.transaction.TransactionManager</classname>.  OpenJPA can automatically
+jakarta.transaction.TransactionManager</classname>.  OpenJPA can automatically
 discover the transaction manager for most major application servers.
 Occasionally, however, you might have to point OpenJPA to the transaction
 manager for an unrecognized or non-standard application server setup.  This is

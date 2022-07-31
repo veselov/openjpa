@@ -24,10 +24,10 @@ import org.apache.openjpa.persistence.PersistenceProviderImpl;
 import org.apache.openjpa.persistence.PersistenceUnitInfoImpl;
 import org.junit.Test;
 
-import javax.persistence.Entity;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Id;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Id;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;

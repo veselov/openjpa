@@ -89,7 +89,7 @@
                             <transformers>
                                 <!-- Need to concatinate the services resources:
                                  org.apache.openjpa.lib.conf.ProductDerivation
-                                 javax.persistence.spi.PersistenceProvider
+                                 jakarta.persistence.spi.PersistenceProvider
                                  org.apache.openjpa.kernel.exps.ExpressionParser
                                 -->
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
@@ -123,11 +123,11 @@
                             </artifactSet>
                             <relocations>
                                 <relocation>
-                                    <pattern>javax.annotation</pattern>
+                                    <pattern>jakarta.annotation</pattern>
                                     <shadedPattern>jakarta.annotation</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>javax.el</pattern>
+                                    <pattern>jakarta.el</pattern>
                                     <shadedPattern>jakarta.el</shadedPattern>
                                 </relocation>
                                 <relocation>
@@ -135,51 +135,51 @@
                                     <shadedPattern>jakarta.enterprise</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>javax.decorator</pattern>
+                                    <pattern>jakarta.decorator</pattern>
                                     <shadedPattern>jakarta.decorator</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>javax.inject</pattern>
+                                    <pattern>jakarta.inject</pattern>
                                     <shadedPattern>jakarta.inject</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>javax.interceptor</pattern>
+                                    <pattern>jakarta.interceptor</pattern>
                                     <shadedPattern>jakarta.interceptor</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>javax.servlet</pattern>
+                                    <pattern>jakarta.servlet</pattern>
                                     <shadedPattern>jakarta.servlet</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>javax.transaction</pattern>
+                                    <pattern>jakarta.transaction</pattern>
                                     <shadedPattern>jakarta.transaction</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>javax.validation</pattern>
+                                    <pattern>jakarta.validation</pattern>
                                     <shadedPattern>jakarta.validation</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>javax.persistence</pattern>
+                                    <pattern>jakarta.persistence</pattern>
                                     <shadedPattern>jakarta.persistence</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>javax.faces</pattern>
+                                    <pattern>jakarta.faces</pattern>
                                     <shadedPattern>jakarta.faces</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>javax.ejb</pattern>
+                                    <pattern>jakarta.ejb</pattern>
                                     <shadedPattern>jakarta.ejb</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>javax.jms</pattern>
+                                    <pattern>jakarta.jms</pattern>
                                     <shadedPattern>jakarta.jms</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>javax.transaction</pattern>
+                                    <pattern>jakarta.transaction</pattern>
                                     <shadedPattern>jakarta.transaction</shadedPattern>
                                 </relocation>
                                 <!--
-                                todo: javax.transaction, it is in the JVM so can have issue repackaging
+                                todo: jakarta.transaction, it is in the JVM so can have issue repackaging
                                 -->
                             </relocations>
                         </configuration>
@@ -219,14 +219,14 @@
                             org.slf4j.*;resolution:=optional,
                             org.apache.commons.logging.*;resolution:=optional,
                             javax.activation.xa*;resolution:=optional,
-                            javax.jms.*;version="[1.1.0,1.2)";resolution:=optional,
-                            javax.transaction.*;version="[1.1,1.3)";resolution:=optional,
-                            javax.validation.*;version="[1.0.0,1.1)";resolution:=optional,
-                            javax.xml.bind.*;resolution:=optional,
+                            jakarta.jms.*;version="[1.1.0,1.2)";resolution:=optional,
+                            jakarta.transaction.*;version="[1.1,1.3)";resolution:=optional,
+                            jakarta.validation.*;version="[1.0.0,1.1)";resolution:=optional,
+                            jakarta.xml.bind.*;resolution:=optional,
                             serp.*;resolution:=optional,
                             org.apache.commons.dbcp2.*;resolution:=optional,
                             org.apache.commons.pool2.*;resolution:=optional,
-                            javax.persistence.*;version="[1.1.0,2.2)",
+                            jakarta.persistence.*;version="[1.1.0,2.2)",
                             *
                         </Import-Package>
                     </instructions>
@@ -254,14 +254,14 @@
             <!--
                  Need to exclude jaxb, so the following will not get included
                  as compile depends in the aggregate JAR by the shade plugin:
-                     javax.xml.bind:jaxb-api:jar:2.0
-                     javax.xml.bind:jsr173_api:jar:1.0
-                     javax.activation:activation:jar:1.1
+                     jakarta.xml.bind:jaxb-api:jar:2.0
+                     jakarta.xml.bind:jsr173_api:jar:1.0
+                     jakarta.activation:activation:jar:1.1
                      com.sun.xml.bind:jaxb-impl:jar:2.0.5
             -->
             <exclusions>
                 <exclusion>
-                    <groupId>javax.xml.bind</groupId>
+                    <groupId>jakarta.xml.bind</groupId>
                     <artifactId>jaxb-api</artifactId>
                 </exclusion>
                 <exclusion>
@@ -271,21 +271,26 @@
             </exclusions>
         </dependency>
         <!-- Need to manually add back optional openjpa-jdbc depends -->
+<!--        <dependency>-->
+<!--            <groupId>jakarta.xml.bind</groupId>-->
+<!--            <artifactId>jaxb-api</artifactId>-->
+<!--            <scope>compile</scope>-->
+<!--            <optional>true</optional>-->
+<!--            <exclusions>-->
+<!--                <exclusion>-->
+<!--                    <groupId>jakarta.xml.bind</groupId>-->
+<!--                    <artifactId>jsr173_api</artifactId>-->
+<!--                </exclusion>-->
+<!--                <exclusion>-->
+<!--                    <groupId>jakarta.activation</groupId>-->
+<!--                    <artifactId>activation</artifactId>-->
+<!--                </exclusion>-->
+<!--            </exclusions>-->
+<!--        </dependency>-->
         <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-            <scope>compile</scope>
-            <optional>true</optional>
-            <exclusions>
-                <exclusion>
-                    <groupId>javax.xml.bind</groupId>
-                    <artifactId>jsr173_api</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>javax.activation</groupId>
-                    <artifactId>activation</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+            <version>4.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.sun.xml.bind</groupId>
@@ -294,11 +299,11 @@
             <optional>true</optional>
             <exclusions>
                 <exclusion>
-                    <groupId>javax.xml.bind</groupId>
+                    <groupId>jakarta.xml.bind</groupId>
                     <artifactId>jsr173_api</artifactId>
                 </exclusion>
                 <exclusion>
-                    <groupId>javax.activation</groupId>
+                    <groupId>jakarta.activation</groupId>
                     <artifactId>activation</artifactId>
                 </exclusion>
             </exclusions>

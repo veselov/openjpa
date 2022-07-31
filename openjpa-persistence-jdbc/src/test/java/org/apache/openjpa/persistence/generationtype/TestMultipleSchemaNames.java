@@ -21,9 +21,9 @@ package org.apache.openjpa.persistence.generationtype;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceException;
-import javax.persistence.Query;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceException;
+import jakarta.persistence.Query;
 
 import org.apache.openjpa.jdbc.conf.JDBCConfiguration;
 import org.apache.openjpa.jdbc.sql.DBDictionary;
