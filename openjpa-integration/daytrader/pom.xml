@@ -27,7 +27,7 @@
     <parent>
         <groupId>org.apache.openjpa</groupId>
         <artifactId>openjpa-integration</artifactId>
-        <version>3.1.2-xl4.j17.6</version>
+        <version>3.1.2-xl4.j17.7-SNAPSHOT</version>
     </parent>
 
     <artifactId>openjpa-integration-daytrader</artifactId>
