@@ -445,11 +445,6 @@ databaseName=${db.name}
 
         <dependencies>
           <dependency>
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-jpa_2.2_spec</artifactId>
-            <scope>compile</scope>
-          </dependency>
-          <dependency>
             <groupId>org.apache.openjpa</groupId>
             <artifactId>openjpa-kernel</artifactId>
             <version>${project.version}</version>
