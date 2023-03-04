@@ -159,10 +159,10 @@
     </distributionManagement>
 
     <scm>
-        <connection>scm:git:https://gitbox.apache.org/repos/asf/openjpa.git</connection>
-        <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/openjpa.git</developerConnection>
-        <url>https://gitbox.apache.org/repos/asf/openjpa.git</url>
-      <tag>3.1.2</tag>
+        <connection>scm:git:https://github.com/veselov/openjpa.git</connection>
+        <developerConnection>scm:git:git@github.com:veselov/openjpa.git</developerConnection>
+        <url>https://github.com/veselov/openjpa</url>
+      <tag>3.1.2.xl4.j17</tag>
   </scm>
 
     <modules>
