@@ -45,6 +45,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.openjpa.conf.OpenJPAConfiguration;
 import org.apache.openjpa.jdbc.identifier.DBIdentifier;
 import org.apache.openjpa.jdbc.identifier.Normalizer;
 import org.apache.openjpa.jdbc.kernel.JDBCFetchConfiguration;
@@ -52,11 +53,13 @@ import org.apache.openjpa.jdbc.kernel.JDBCStore;
 import org.apache.openjpa.jdbc.kernel.exps.FilterValue;
 import org.apache.openjpa.jdbc.schema.Column;
 import org.apache.openjpa.jdbc.schema.Index;
+import org.apache.openjpa.jdbc.schema.Sequence;
 import org.apache.openjpa.jdbc.schema.Table;
 import org.apache.openjpa.kernel.Filters;
 import org.apache.openjpa.lib.jdbc.DelegatingConnection;
 import org.apache.openjpa.lib.jdbc.DelegatingPreparedStatement;
 import org.apache.openjpa.lib.jdbc.ReportingSQLException;
+import org.apache.openjpa.lib.log.Log;
 import org.apache.openjpa.lib.util.J2DoPrivHelper;
 import org.apache.openjpa.lib.util.Localizer;
 import org.apache.openjpa.meta.JavaTypes;
@@ -109,6 +112,10 @@ public class PostgresDictionary extends DBDictionary {
         "SEQUENCE_SCHEMA, relname AS SEQUENCE_NAME FROM pg_class, " +
         "pg_namespace WHERE relkind='S' AND pg_class.relnamespace = " +
         "pg_namespace.oid AND relname = ? AND nspname = ?";
+
+    // $TODO - this is most likely very wrong - this disregards the catalog and schema names
+    // but it works for our use case.
+    private final static String getSequenceIncrement = "SELECT increment from information_schema.sequences where sequence_name = ?";
 
     /**
      * Some Postgres drivers do not support the {@link Statement#setFetchSize}
@@ -1130,6 +1137,34 @@ public class PostgresDictionary extends DBDictionary {
                     _dict.log.warn(_loc.get("psql-no-set-fetch-size"), e);
             }
         }
+    }
+
+    @Override
+    public boolean isSequenceIncrementCorrect(Connection conn, Sequence seq) {
+
+        DBIdentifier dbs = seq.getFullIdentifier();
+
+        try (PreparedStatement ps = conn.prepareStatement(getSequenceIncrement)) {
+
+            ps.setString(1, dbs.getName());
+
+            setTimeouts(ps, conf, false);
+            ResultSet rs = ps.executeQuery();
+            if (!rs.next()) { return false; }
+            int currentVal = rs.getInt(1);
+            if (rs.wasNull()) {
+                return false;
+            }
+            if (rs.next()) { throw new Exception("multiple sequences matched"); }
+            return currentVal == seq.getIncrement() * seq.getAllocate();
+        } catch (Exception e) {
+            if (log.isErrorEnabled()) {
+                log.error(_loc.get("failed-seq-increment-get", seq.getFullIdentifier().toString()), e);
+            }
+            return false;
+        }
+
+
     }
 }
 

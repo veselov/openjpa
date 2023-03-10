@@ -3769,6 +3769,10 @@ public class DBDictionary
         return new String[]{ "DROP SEQUENCE " + getFullName(seq) };
     }
 
+    public boolean isSequenceIncrementCorrect(Connection c, Sequence seq) {
+        return false;
+    }
+
     /**
      * Return a series of SQL statements to create the given index. Returns
      * <code>CREATE [UNIQUE] INDEX &lt;index name&gt; ON &lt;table name&gt;
