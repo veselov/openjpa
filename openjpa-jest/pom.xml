@@ -28,7 +28,7 @@
     <parent>
         <groupId>org.apache.openjpa</groupId>
         <artifactId>openjpa-parent</artifactId>
-        <version>3.1.2-xl4.6</version>
+        <version>3.1.2-xl4.7-SNAPSHOT</version>
     </parent>
 
     <artifactId>openjpa-jest</artifactId>
