@@ -125,6 +125,14 @@
         <url>https://builds.apache.org/job/OpenJPA-trunk-deploy/</url>
     </ciManagement>
 
+    <repositories>
+        <repository>
+            <id>excelfore.all</id>
+            <name>ESync Development repo</name>
+            <url>https://dev-esync.excelfore.com/artifactory/excelfore.all</url>
+        </repository>
+    </repositories>
+
     <inceptionYear>2006</inceptionYear>
 
     <mailingLists>
@@ -1708,7 +1716,7 @@
             <dependency>
                 <groupId>net.sourceforge.serp</groupId>
                 <artifactId>serp</artifactId>
-                <version>1.15.1</version>
+                <version>1.15.2-xl4.1</version>
                 <exclusions>
                   <exclusion>
                     <groupId>junit</groupId>
