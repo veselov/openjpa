@@ -198,6 +198,7 @@ public class OpenJPAConfigurationImpl
     public BrokerFactoryValue brokerFactoryPlugin;
     public RemoteCommitProviderValue remoteProviderPlugin;
     public AutoDetachValue autoDetach;
+    public IntValue sequenceTimeout;
 
     private Collection<String> supportedOptions = new HashSet<>(33);
     private final StoreFacadeTypeRegistry _storeFacadeRegistry = new StoreFacadeTypeRegistry();
@@ -675,6 +676,10 @@ public class OpenJPAConfigurationImpl
         useTcclForSelectNew = addBoolean("UseTCCLinSelectNew");
         useTcclForSelectNew.setDefault("false");
         useTcclForSelectNew.set(false);
+
+        sequenceTimeout = addInt("SequenceTimeout");
+        sequenceTimeout.setDefault("0");
+        sequenceTimeout.set(0);
 
         typesWithoutEnhancement = new ClassListValue();
 
@@ -2283,6 +2288,11 @@ public class OpenJPAConfigurationImpl
         if (useTcclForSelectNew != null) {
             setUseTCCLinSelectNew(useTcclForSelectNew.booleanValue());
         }
+    }
+
+    @Override
+    public int getSequenceTimeout() {
+        return sequenceTimeout.get();
     }
 
     @Override

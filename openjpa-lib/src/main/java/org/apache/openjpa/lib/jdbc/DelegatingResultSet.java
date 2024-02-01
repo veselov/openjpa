@@ -57,7 +57,11 @@ public class DelegatingResultSet implements ResultSet, Closeable {
     private final Statement _stmnt;
 
     public DelegatingResultSet(ResultSet rs, Statement stmnt) {
-        if (rs == null)
+        this(rs, stmnt, false);
+    }
+
+    public DelegatingResultSet(ResultSet rs, Statement stmnt, boolean nullOk) {
+        if (!nullOk && rs == null)
             throw new IllegalArgumentException();
 
         _stmnt = stmnt;

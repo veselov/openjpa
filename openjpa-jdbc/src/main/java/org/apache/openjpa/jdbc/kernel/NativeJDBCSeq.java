@@ -22,7 +22,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.MessageFormat;
+import java.time.Instant;
+import java.util.TreeSet;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.openjpa.conf.OpenJPAConfiguration;
 import org.apache.openjpa.jdbc.conf.JDBCConfiguration;
@@ -63,6 +67,8 @@ public class NativeJDBCSeq
     extends AbstractJDBCSeq
     implements Configurable {
 
+    final static AtomicLong idGen = new AtomicLong();
+
     public static final String ACTION_DROP = "drop";
     public static final String ACTION_ADD = "add";
     public static final String ACTION_GET = "get";
@@ -84,6 +90,14 @@ public class NativeJDBCSeq
     private boolean alterIncrementBy = false;
     private boolean alreadyLoggedAlterSeqFailure = false;
     private boolean alreadyLoggedAlterSeqDisabled = false;
+
+    final static TreeSet<CancelEntry> cancelQueue = new TreeSet<>();
+
+    // $TODO: On what basis can we stop this thread?
+    // Supposedly, this is only needed when the classloader with the
+    // OpenJPA classes goes away, which should happen when a WAR is unloaded,
+    // but do I here know that this has happened?
+    final static Thread cancelThread = new Thread(()-> runCancel());
 
     /**
      * The sequence name. Defaults to <code>OPENJPA_SEQUENCE</code>.
@@ -140,6 +154,84 @@ public class NativeJDBCSeq
      */
     public void setIncrement(int increment) {
         _increment = increment;
+    }
+
+    private static void runCancel() {
+
+        synchronized (cancelQueue) {
+
+            while (true) {
+
+                long waitNS = 0;
+                long now = System.nanoTime();
+
+                while (!cancelQueue.isEmpty()) {
+
+                    CancelEntry next = cancelQueue.first();
+
+                    long d = next.when - now;
+
+                    if (d > 0) {
+                        // System.out.println(Instant.now() + " Not ready to cancel "+next.id+", "+d+"ns left");
+                        waitNS = d;
+                        break;
+                    }
+
+                    // System.out.println(Instant.now() + " Canceling "+next.id);
+
+                    next.cancel();
+                    cancelQueue.remove(next);
+
+                }
+
+                try {
+                    cancelQueue.wait(waitNS / 1000000, (int)(waitNS % 1000000));
+                } catch (InterruptedException ignored) {
+                    // ignore
+                }
+
+            }
+
+        }
+
+    }
+
+    AC enrollForCancel(Statement s) {
+
+        int timeout = _conf.getSequenceTimeout();
+        return enrollForCancel(s, timeout);
+
+    }
+
+    AC enrollForCancel(Statement s, int timeout) {
+
+        if (timeout <= 0) {
+            return () -> {};
+        }
+
+        synchronized (cancelQueue) {
+
+            if (!cancelThread.isAlive()) {
+                cancelThread.setName("OpenJPA Sequence canceller");
+                cancelThread.setDaemon(true);
+                cancelThread.start();
+            }
+
+            CancelEntry item = new CancelEntry(s, timeout);
+            // System.out.println(Instant.now() + " Enrolling for cancel: " + item.id + ", timeout: " + timeout+"ms");
+            cancelQueue.add(item);
+            cancelQueue.notifyAll();
+
+            return ()->{
+                synchronized (cancelQueue) {
+                    // System.out.println(Instant.now() + " Delisting from cancel: " + item.id);
+                    cancelQueue.remove(item);
+                    cancelQueue.notifyAll();
+                }
+            };
+
+        }
+
     }
 
     @Override
@@ -328,15 +420,21 @@ public class NativeJDBCSeq
     /**
      * Return the next sequence value.
      */
-    private long getSequence(Connection conn)
+    long getSequence(Connection conn)
         throws SQLException {
-        DBDictionary dict = _conf.getDBDictionaryInstance();
+
+        // DBDictionary dict = _conf.getDBDictionaryInstance();
+
         PreparedStatement stmnt = null;
         ResultSet rs = null;
         try {
             stmnt = conn.prepareStatement(_select);
-            dict.setTimeouts(stmnt, _conf, false);
-            rs = stmnt.executeQuery();
+            // we don't want normal timeouts for sequence queries
+            // dict.setTimeouts(stmnt, _conf, false);
+            try (AC ignored = enrollForCancel(stmnt)) {
+                rs = stmnt.executeQuery();
+            }
+
             if (rs.next())
                 return rs.getLong(1);
 
@@ -482,6 +580,49 @@ public class NativeJDBCSeq
 
     public DBIdentifier getSchemaIdentifier() {
         return _schema;
+    }
+
+    class CancelEntry implements Comparable<CancelEntry> {
+        final long when;
+        final Statement statement;
+        final long id = idGen.getAndIncrement();
+
+        CancelEntry(Statement statement, int timeout) {
+            this.statement = statement;
+            this.when = System.nanoTime() + timeout * 1000000L;
+        }
+
+        void cancel() {
+
+            Log log = _conf.getLog(OpenJPAConfiguration.LOG_RUNTIME);
+
+            try {
+                if (log.isWarnEnabled()) {
+                    log.warn(_loc.get("seq-cancel-query"));
+                }
+                statement.cancel();
+            } catch (Exception e) {
+                if (log.isErrorEnabled()) {
+                    log.error(_loc.get("seq-cancel-err"), e);
+                }
+            }
+
+        }
+
+        @Override
+        public int compareTo(CancelEntry o) {
+            long d = when - o.when;
+            if (d < 0) { return -1; }
+            if (d > 0) { return 1; }
+            // if time is the same, we just need to return "not same",
+            // the order then isn't important.
+            return this.equals(o) ? 0 : 1;
+        }
+    }
+
+    interface AC extends AutoCloseable {
+        @Override
+        void close();
     }
 
 }

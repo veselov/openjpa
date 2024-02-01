@@ -66,6 +66,7 @@ import org.apache.openjpa.meta.JavaTypes;
 import org.apache.openjpa.util.InternalException;
 import org.apache.openjpa.util.StoreException;
 import org.postgresql.PGConnection;
+import org.postgresql.jdbc.PgConnection;
 import org.postgresql.largeobject.LargeObject;
 import org.postgresql.largeobject.LargeObjectManager;
 

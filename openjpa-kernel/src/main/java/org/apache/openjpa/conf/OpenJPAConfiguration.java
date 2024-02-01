@@ -2012,6 +2012,8 @@ public interface OpenJPAConfiguration
 
     Collection<Class<?>> getTypesWithoutEnhancement();
 
+    int getSequenceTimeout();
+
     void setTypesWithoutEnhancement(Collection<Class<?>> value);
 }
 
