@@ -56,12 +56,14 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-pool2</artifactId>
         </dependency>
+        <!--
         <dependency>
             <groupId>com.ibm.websphere</groupId>
             <artifactId>uow_api</artifactId>
             <version>6</version>
             <scope>provided</scope>
         </dependency>
+        -->
         <dependency>
             <groupId>org.apache.ant</groupId>
             <artifactId>ant</artifactId>
@@ -171,6 +173,7 @@
         </plugins>
     </build>
 
+    <!--
     <repositories>
         <repository>
             <id>seasar-repo</id>
@@ -178,4 +181,5 @@
             <url>https://www.seasar.org/maven/maven2</url>
         </repository>
     </repositories>
+    -->
 </project>

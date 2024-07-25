@@ -166,9 +166,17 @@ abstract class UnaryOp
         // In the case where _val is an Arg, when addCastForParam gets the
         // type, it will be getting the type of the Val (an Object) rather
         // the type of the Arg.
-        sql.addCastForParam(getOperator(),
-            (_val instanceof Args) ? (((Args) _val).getVals())[0]
-                                   : _val);
+
+        if (_val instanceof Args) {
+            Args args = (Args) _val;
+            Val[] vals = args.getVals();
+            if (vals.length > 0) {
+                sql.addCastForParam(getOperator(), vals[0]);
+            }
+        } else {
+            sql.addCastForParam(getOperator(), _val);
+        }
+
         if (!_noParen)
             sql.append(")");
     }

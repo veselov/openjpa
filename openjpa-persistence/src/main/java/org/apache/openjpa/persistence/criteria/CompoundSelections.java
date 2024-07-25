@@ -162,7 +162,11 @@ class CompoundSelections {
                 }
             }
             try {
-                return cls.getConstructor(types);
+                // stupid
+                // return cls.getConstructor(types);
+                Constructor<X> cst = cls.getDeclaredConstructor(types);
+                if (!cst.isAccessible()) { cst.setAccessible(true); }
+                return cst;
             } catch (NoSuchMethodException e) {
                 throw new IllegalArgumentException(_loc.get("select-no-ctor", cls,
                     types == null ? "[]" : Arrays.toString(types)).getMessage());

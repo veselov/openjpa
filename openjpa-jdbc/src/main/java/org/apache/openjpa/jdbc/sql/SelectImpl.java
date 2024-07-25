@@ -1658,7 +1658,7 @@ public class SelectImpl
     @Override
     public void groupBy(SQLBuffer sql, Joins joins) {
         getJoins(joins, true);
-        groupByAppend(sql.getSQL());
+        groupByAppend(sql);
     }
 
     @Override
@@ -1706,6 +1706,26 @@ public class SelectImpl
 
             _grouping.append(sql);
             _grouped.add(sql);
+        }
+    }
+
+    private void groupByAppend(SQLBuffer sql) {
+        if (_grouped == null || !_grouped.contains(sql.getSQL())) {
+
+            if (!sql.getParameters().isEmpty()) {
+                throw new RuntimeException("Don't put variable parameters in group by expressions, " +
+                        "that won't work. Use openjpa.hint.UseLiteralInSQL hint instead");
+            }
+
+            if (_grouping == null) {
+                _grouping = new SQLBuffer(_dict);
+                _grouped = new ArrayList();
+            } else {
+                _grouping.append(", ");
+            }
+
+            _grouping.append(sql);
+            _grouped.add(sql.getSQL());
         }
     }
 
