@@ -41,6 +41,7 @@ import org.apache.openjpa.jdbc.meta.Joinable;
 import org.apache.openjpa.jdbc.meta.RelationId;
 import org.apache.openjpa.jdbc.schema.Column;
 import org.apache.openjpa.jdbc.schema.ColumnIO;
+import org.apache.openjpa.jdbc.schema.Constraint;
 import org.apache.openjpa.jdbc.schema.ForeignKey;
 import org.apache.openjpa.jdbc.schema.Table;
 import org.apache.openjpa.kernel.OpenJPAStateManager;
@@ -317,33 +318,79 @@ public class RowImpl
         }
     }
 
-    private void setJoinRefColumn(OpenJPAStateManager inverseSm, Column ownerCols[], Column inverseCol,
-                                   Object val) {
+    private void setJoinRefColumn(
+            OpenJPAStateManager inverseSm, // foreign object
+            Column[] ownerCols, // columns that can be updated in this
+            Column inverseCol, // foreign column that need to be considered
+            Object val // red herring
+    ) {
         OpenJPAStateManager ownerSm = getPrimaryKey();
         if (ownerSm != null) {
+
             ClassMetaData ownerMeta = ownerSm.getMetaData();
+            FieldMetaData[] ownerFields = ownerMeta.getFields();
             // loop through all the fields in the owner entity
-            for (FieldMetaData ownerFM : ownerMeta.getFields()) {
+            for (FieldMetaData ownerFM : ownerFields) {
                 // look for any single column in this field references the
                 // same column as the foreign key target column
-                Column cols[] = ((FieldMapping) ownerFM).getColumns();
-                if (cols.length == 1            // only support attribute of non-compound foreign key
-                        && cols != ownerCols    // not @Id field
-                        && cols[0].getIdentifier().equals(ownerCols[0].getIdentifier())) {
-                    // copy the foreign key value to the current field.
-                    FieldMetaData inverseFM = inverseSm.getMetaData().getField(
-                                    inverseCol.getIdentifier().getName());
-                    if (inverseFM != null) {
-                        int inverseValIndex = inverseFM.getIndex();
-                        Class<?> inverseType = inverseSm.getMetaData().getField(inverseValIndex).getType();
-                        int ownerIndex = ownerFM.getIndex();
-                        Class<?> ownerType = ownerSm.getMetaData().getField(ownerIndex).getType();
-                        if (inverseType == ownerType) {
-                            Object inverseVal = inverseSm.fetch(inverseValIndex);
-                            ownerSm.storeField(ownerIndex, inverseVal);
-                        }
+                Column[] cols = ((FieldMapping) ownerFM).getColumns();
+
+                if (cols.length != 1 // only support attribute of non-compound foreign key
+                        || cols == ownerCols  // not @Id field
+                        // OPENJPA-2929 - this check makes NO sense, it checks if the column in OWNER
+                        // is the same that the first column in INVERSE's ID, but if inverse has a compound ID,
+                        // it will set all of or none of owner fields
+                        // || !cols[0].getIdentifier().equals(ownerCols[0].getIdentifier())
+                ) {
+                    continue;
+                }
+
+                // we need to answer the question - is cols[0] in ownerCols[0], and does it
+                // actually match the inverse column declared here. I don't necessarily know how to do
+                // this correctly. The column must have been declared as a @JoinColumns on some field,
+                // but I don't know where to find that based on cols[0]. I do see that the column has
+                // an FK constraint, I'm going to base this off of that.
+
+                boolean found = false;
+                for (Column ownerCol : ownerCols) {
+                    if (cols[0].getIdentifier().equals(ownerCol.getIdentifier())) {
+                        found = true;
+                        break;
                     }
                 }
+                if (!found) { continue; }
+
+                found = false;
+
+                for (Constraint c : cols[0].getConstraints()) {
+                    if (!(c instanceof ForeignKey)) { continue; }
+                    ForeignKey fk = (ForeignKey) c;
+                    Column ownerFK = fk.getColumn(inverseCol);
+                    if (ownerFK != null && ownerFK.getFullDBIdentifier().equals(cols[0].getFullDBIdentifier())) {
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found) { continue; }
+
+                FieldMetaData inverseFM = inverseSm.getMetaData().getField(
+                        inverseCol.getIdentifier().getName());
+
+                if (inverseFM == null) {
+                    continue;
+                }
+
+                int inverseValIndex = inverseFM.getIndex();
+                Class<?> inverseType = inverseSm.getMetaData().getField(inverseValIndex).getType();
+                int ownerIndex = ownerFM.getIndex();
+                Class<?> ownerType = ownerSm.getMetaData().getField(ownerIndex).getType();
+                if (inverseType == ownerType) {
+                    // $TODO: why not just set the incoming val?
+                    Object inverseVal = inverseSm.fetch(inverseValIndex);
+                    ownerSm.storeField(ownerIndex, inverseVal);
+                }
+
             }
         }
     }
