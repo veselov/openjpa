@@ -28,7 +28,7 @@
     <parent>
         <groupId>org.apache.openjpa</groupId>
         <artifactId>openjpa-parent</artifactId>
-        <version>3.1.2-xl4.j17.13</version>
+        <version>3.1.2-xl4.j17.14-SNAPSHOT</version>
     </parent>
 
     <artifactId>openjpa-integration</artifactId>
