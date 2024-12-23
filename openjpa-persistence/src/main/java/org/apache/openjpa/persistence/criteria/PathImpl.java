@@ -170,6 +170,7 @@ class PathImpl<Z,X> extends ExpressionImpl<X> implements Path<X> {
             path = factory.newPath(q.getRegisteredVariable(_parent));
             path.setSchemaAlias(q.getAlias(_parent));
             path.get(_member.fmd, allowNull);
+            path.setMetaData(q.getMetamodel().getRepository().getCachedMetaData(_parent.getJavaType()));
         } else if (_parent != null && _parent._correlatedPath != null && q.isRegistered(_parent._correlatedPath)){
             path = factory.newPath(q.getRegisteredVariable(_parent._correlatedPath));
             path.setSchemaAlias(q.getAlias(_parent._correlatedPath));

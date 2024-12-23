@@ -28,6 +28,7 @@ import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.ParameterExpression;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
@@ -52,7 +53,7 @@ public class TestCompositePrimaryKeys extends SingleEMFTestCase {
 
     @Override
     public void setUp() {
-        super.setUp(DROP_TABLES, Subject.class, SubjectKey.class, SubjectWithIdClass.class, Topic.class);
+        super.setUp(DROP_TABLES, Subject.class, SubjectKey.class, SubjectWithIdClass.class, Topic.class, SubTopic.class);
 
             em = emf.createEntityManager();
             tx = em.getTransaction();
@@ -489,6 +490,25 @@ public class TestCompositePrimaryKeys extends SingleEMFTestCase {
         Assert.assertEquals(s.getSubjectTypeCode(), s2.getSubjectTypeCode());
     }
 
+    public void testFindUsingCriteriaBuilderOnSubjectWithJoin() {
+
+        Subject sub = em.find(Subject.class, new SubjectKey(1, "Type"));
+
+        CriteriaBuilder builder = em.getCriteriaBuilder();
+        CriteriaQuery<SubTopic> cq = builder.createQuery(SubTopic.class);
+        Root<SubTopic> root = cq.from(SubTopic.class);
+        Join<SubTopic, Topic> join = root.join(SubTopic_.topic);
+        cq.where(builder.equal(join.get(Topic_.subject), sub));
+        root.fetch(SubTopic_.topic);
+
+        TypedQuery<SubTopic> query = em.createQuery(cq);
+        SubTopic found = query.getSingleResult();
+
+        Assert.assertNotNull(found);
+        Assert.assertEquals(Integer.valueOf(8), found.getId());
+
+    }
+
 
     private void createData(){
         Subject s = new Subject();
@@ -509,6 +529,11 @@ public class TestCompositePrimaryKeys extends SingleEMFTestCase {
         t.setId(5);
         t.setSubject(s);
         em.persist(t);
+
+        SubTopic st = new SubTopic();
+        st.setId(8);
+        st.setTopic(t);
+        em.persist(st);
 
         SubjectWithIdClass swic = new SubjectWithIdClass();
         swic.setSubjectNummer(1);

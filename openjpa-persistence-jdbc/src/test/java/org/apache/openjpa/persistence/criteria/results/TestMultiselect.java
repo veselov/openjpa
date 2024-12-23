@@ -384,18 +384,20 @@ public class TestMultiselect extends CriteriaTest {
         Root<Foo> foo = q.from(Foo.class);
         try {
             q.multiselect(cb.construct(Foo.class, foo.get(Foo_.flong)));
-            fail("Expected IllegalArgumentException becuase Foo(long) is not a valid constructor");
+            fail("Expected IllegalArgumentException because Foo(long) is not a valid constructor");
         } catch (IllegalArgumentException e) {
             // good -- but print the error message to check it is informative enough
             System.err.println(e);
         }
+        /* ESYNC-8111 disable this test, these are now accepted
         try {
             q.multiselect(cb.construct(Foo.class));
-            fail("Expected IllegalArgumentException becuase Foo() is not a valid constructor");
+            fail("Expected IllegalArgumentException because Foo() is not a valid constructor");
         } catch (IllegalArgumentException e) {
             // good -- but print the error message to check it is informative enough
             System.err.println(e);
         }
+         */
 
     }
 
