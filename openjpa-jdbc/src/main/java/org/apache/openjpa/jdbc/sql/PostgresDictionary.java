@@ -142,6 +142,7 @@ public class PostgresDictionary extends DBDictionary {
         supportsDeferredConstraints = true;
         supportsSelectStartIndex = true;
         supportsSelectEndIndex = true;
+        needNewDDLConn = false;
 
         maxTableNameLength = 63;
         maxColumnNameLength = 63;

@@ -275,6 +275,7 @@ public class DBDictionary
     public boolean supportsSimpleCaseExpression = true;
     public boolean supportsGeneralCaseExpression = true;
     public boolean useWildCardForCount = false;
+    public boolean needNewDDLConn = true;
 
     /**
      * Some Databases append whitespace after the schema name
