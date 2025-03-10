@@ -36,7 +36,7 @@
     <name>OpenJPA Parent POM</name>
     <description>Apache OpenJPA implementation of JSR-338 JPA 2.1</description>
 
-    <version>3.1.2-xl4.j17.14</version>
+    <version>3.1.2-xl4.j17.15-SNAPSHOT</version>
 
     <properties>
         <java.class.version>1.8</java.class.version>
@@ -170,7 +170,7 @@
         <connection>scm:git:https://github.com/veselov/openjpa.git</connection>
         <developerConnection>scm:git:git@github.com:veselov/openjpa.git</developerConnection>
         <url>https://github.com/veselov/openjpa</url>
-      <tag>3.1.2-xl4.j17.14</tag>
+      <tag>3.1.2.xl4.j17</tag>
   </scm>
 
     <modules>
