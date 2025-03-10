@@ -320,9 +320,11 @@ public class NativeJDBCSeq
                     // as to not potentially insert records ahead of what the database thinks is the next sequence
                     // value.
 
-                    // first we have to allocate a new connection as some databases do an implicit commit
-                    // if a DDL gets changed. Others do blow up on a DDL change
-                    try (Connection newConn = getConnection(store, true)) {
+                    // We may have to allocate a new connection as some databases do an implicit commit
+                    // if a DDL gets changed and others do blow up on a DDL change, so ask the DBDictionary
+                    // whether to do so.
+
+                    try (Connection newConn = getConnection(store, dict.needNewDDLConn)) {
 
                         if (!dict.isSequenceIncrementCorrect(newConn, _seq)) {
 
