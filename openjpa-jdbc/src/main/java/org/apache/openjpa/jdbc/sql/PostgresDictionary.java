@@ -115,8 +115,8 @@ public class PostgresDictionary extends DBDictionary {
         "pg_namespace.oid AND relname = ? AND nspname = ?";
 
     // $TODO - this is most likely very wrong - this disregards the catalog and schema names
-    // but it works for our use case.
-    private final static String getSequenceIncrement = "SELECT increment from information_schema.sequences where sequence_name = ?";
+    //   but it works for our use case.
+    private final static String getSequenceIncrement = "SELECT s.seqincrement FROM pg_catalog.pg_sequence s WHERE s.seqrelid = to_regclass(?)";
 
     /**
      * Some Postgres drivers do not support the {@link Statement#setFetchSize}
@@ -1152,13 +1152,19 @@ public class PostgresDictionary extends DBDictionary {
 
             setTimeouts(ps, conf, false);
             ResultSet rs = ps.executeQuery();
-            if (!rs.next()) { return false; }
+            if (!rs.next()) {
+                return false;
+            }
             int currentVal = rs.getInt(1);
             if (rs.wasNull()) {
                 return false;
             }
             if (rs.next()) { throw new Exception("multiple sequences matched"); }
-            return currentVal == seq.getIncrement() * seq.getAllocate();
+            // the if/else is here on purpose for making it easier to debug
+            if (currentVal == seq.getIncrement() * seq.getAllocate()) {
+                return true;
+            }
+            return false;
         } catch (Exception e) {
             if (log.isErrorEnabled()) {
                 log.error(_loc.get("failed-seq-increment-get", seq.getFullIdentifier().toString()), e);

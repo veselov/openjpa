@@ -67,8 +67,6 @@ public class NativeJDBCSeq
     extends AbstractJDBCSeq
     implements Configurable {
 
-    final static AtomicLong idGen = new AtomicLong();
-
     public static final String ACTION_DROP = "drop";
     public static final String ACTION_ADD = "add";
     public static final String ACTION_GET = "get";
@@ -97,7 +95,7 @@ public class NativeJDBCSeq
     // Supposedly, this is only needed when the classloader with the
     // OpenJPA classes goes away, which should happen when a WAR is unloaded,
     // but do I here know that this has happened?
-    final static Thread cancelThread = new Thread(()-> runCancel());
+    final static Thread cancelThread = new Thread(NativeJDBCSeq::runCancel);
 
     /**
      * The sequence name. Defaults to <code>OPENJPA_SEQUENCE</code>.
@@ -163,12 +161,12 @@ public class NativeJDBCSeq
             while (true) {
 
                 long waitNS = 0;
-                long now = System.nanoTime();
 
                 while (!cancelQueue.isEmpty()) {
 
                     CancelEntry next = cancelQueue.first();
 
+                    long now = System.nanoTime();
                     long d = next.when - now;
 
                     if (d > 0) {
@@ -587,11 +585,11 @@ public class NativeJDBCSeq
     class CancelEntry implements Comparable<CancelEntry> {
         final long when;
         final Statement statement;
-        final long id = idGen.getAndIncrement();
+        final long submitted = System.nanoTime();
 
         CancelEntry(Statement statement, int timeout) {
             this.statement = statement;
-            this.when = System.nanoTime() + timeout * 1000000L;
+            this.when = submitted + timeout * 1000000L;
         }
 
         void cancel() {
@@ -600,7 +598,7 @@ public class NativeJDBCSeq
 
             try {
                 if (log.isWarnEnabled()) {
-                    log.warn(_loc.get("seq-cancel-query"));
+                    log.warn(_loc.get("seq-cancel-query", String.format("%,d", submitted), String.format("%,d", System.nanoTime())));
                 }
                 statement.cancel();
             } catch (Exception e) {
