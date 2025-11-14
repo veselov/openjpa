@@ -180,7 +180,7 @@ public class PostgresDictionary extends DBDictionary {
             "BOOL", "BYTEA", "NAME", "INT8", "INT2", "INT2VECTOR", "INT4",
             "REGPROC", "TEXT", "OID", "TID", "XID", "CID", "OIDVECTOR",
             "SET", "FLOAT4", "FLOAT8", "ABSTIME", "RELTIME", "TINTERVAL",
-            "MONEY", "JSONB"
+            "MONEY", "JSONB", "TSVECTOR"
         }));
         booleanRepresentation = BooleanRepresentationFactory.BOOLEAN;
 
@@ -996,6 +996,9 @@ public class PostgresDictionary extends DBDictionary {
             String colName = dbi.getName();
             if (colName != null) {
                 if ("JSONB".equalsIgnoreCase(colName)) {
+                    return true;
+                }
+                if ("TSVECTOR".equalsIgnoreCase(colName)) {
                     return true;
                 }
             }

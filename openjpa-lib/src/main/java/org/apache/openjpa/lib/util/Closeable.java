@@ -20,7 +20,7 @@ package org.apache.openjpa.lib.util;
 
 /**
  * Generic interface for components that can be closed so that helpers
- * can treate them in a generic way.
+ * can treat them in a generic way.
  *
  * @author Abe White
  */
