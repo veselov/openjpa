@@ -20,6 +20,7 @@ package org.apache.openjpa.jdbc.meta.strats;
 
 import java.sql.SQLException;
 
+import org.apache.openjpa.jdbc.ExternalSchema;
 import org.apache.openjpa.jdbc.identifier.DBIdentifier;
 import org.apache.openjpa.jdbc.kernel.JDBCFetchConfiguration;
 import org.apache.openjpa.jdbc.kernel.JDBCStore;
@@ -77,6 +78,10 @@ public class FullClassStrategy
 
         // find class table
         Table table = info.getTable(cls, adapt);
+
+        if (cls.getDescribedType().getAnnotation(ExternalSchema.class) != null) {
+            table.setExternalSchema(true);
+        }
 
         // find primary key column
         Column[] pkCols = null;

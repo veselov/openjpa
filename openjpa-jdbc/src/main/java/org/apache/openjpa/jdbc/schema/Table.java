@@ -69,6 +69,9 @@ public class Table
     private boolean _isAssociation = false;
     private QualifiedDBIdentifier _fullPath = null;
 
+    // tool metadata
+    private boolean externalSchema;
+
     /**
      * Default constructor.
      */
@@ -954,5 +957,14 @@ public class Table
 
     public void setColNumber(int colNum) {
         _colNum = colNum;
+    }
+
+    public boolean isExternalSchema() {
+        return externalSchema;
+    }
+
+    public Table setExternalSchema(boolean externalSchema) {
+        this.externalSchema = externalSchema;
+        return this;
     }
 }

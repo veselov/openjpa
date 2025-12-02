@@ -656,6 +656,8 @@ public class SchemaTool {
                     }
                 }
 
+                if (tabs[j].isExternalSchema()) { continue; }
+
                 if (createTable(tabs[j])) {
                     newTables.add(tabs[j]);
                     schema = db.getSchema(tabs[j].getSchemaIdentifier());
@@ -677,6 +679,8 @@ public class SchemaTool {
                 // have been turned off
                 if (!_indexes && !newTables.contains(tabs[j]))
                     continue;
+
+                if (tabs[j].isExternalSchema()) { continue; }
 
                 idxs = tabs[j].getIndexes();
                 if (considerDatabaseState) {
@@ -710,6 +714,8 @@ public class SchemaTool {
                     }
                 }
 
+                if (tabs[j].isExternalSchema()) { continue; }
+
                 uniques = tabs[j].getUniques();
                 if (uniques == null || uniques.length == 0)
                     continue;
@@ -737,6 +743,8 @@ public class SchemaTool {
                         continue;
                     }
                 }
+
+                if (tabs[j].isExternalSchema()) { continue; }
 
                 fks = tabs[j].getForeignKeys();
                 if (considerDatabaseState) {
