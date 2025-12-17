@@ -3371,6 +3371,14 @@ public class SelectImpl
         return _dict;
     }
 
+    @Override
+    public void ensureSource(Table source) {
+        if (source == null) { return; }
+        if (getTableAliases().isEmpty()) {
+            getTableIndex(source, null, true);
+        }
+    }
+
     /**
      * Helper class to track selected columns, with fast contains method.
      * Acts as a list of select ids, with additional methods to manipulate

@@ -768,4 +768,6 @@ public interface Select
     List getExcludedJoinedTableClassMeta();
 
     DBDictionary getDictionary() ;
+
+    void ensureSource(Table source);
 }

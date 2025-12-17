@@ -1086,6 +1086,11 @@ public class LogicalUnion
         public DBDictionary getDictionary() {
             return dict;
         }
+
+        @Override
+        public void ensureSource(Table source) {
+            sel.ensureSource(source);
+        }
     }
 
     /**

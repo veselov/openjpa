@@ -230,11 +230,18 @@ public class JDBCStoreQuery
             BitSet paged;
             for (int i = 0, idx = 0; i < sels.size(); i++) {
                 sel = (Select) sels.get(i);
-                paged = populateSelect(sel, (ClassMapping) selMappings.get(i),
+
+                ClassMapping mapping = (ClassMapping) selMappings.get(i);
+
+                paged = populateSelect(sel, mapping,
                     subclassBits.get(i), (JDBCExpressionFactory) facts[idx],
                     exps[idx], states[idx], ctx, lrs, eager, start, end);
 
-                rop = executeSelect(sel, (ClassMapping) selMappings.get(i),
+                if (mapping != null) {
+                    sel.ensureSource(mapping.getTable());
+                }
+
+                rop = executeSelect(sel, mapping,
                     exps[idx], states[idx], ctx, paged, start, end);
                 if (rops != null)
                     rops[i] = rop;
@@ -272,14 +279,16 @@ public class JDBCStoreQuery
         final long start, final long end) {
         final BitSet[] paged = (exps[0].projections.length > 0) ? null
             : new BitSet[mappings.length];
-        union.select(new Union.Selector() {
-            @Override
-            public void select(Select sel, int idx) {
-                BitSet bits = populateSelect(sel, mappings[idx], subclasses,
-                    (JDBCExpressionFactory) facts[idx], exps[idx], states[idx],
-                    ctx,  lrs, eager, start, end);
-                if (paged != null)
-                    paged[idx] = bits;
+        union.select((sel, idx) -> {
+            ClassMapping mapping = mappings[idx];
+            BitSet bits = populateSelect(sel, mapping, subclasses,
+                (JDBCExpressionFactory) facts[idx], exps[idx], states[idx],
+                ctx,  lrs, eager, start, end);
+            if (paged != null) {
+                paged[idx] = bits;
+            }
+            if (mapping != null) {
+                sel.ensureSource(mapping.getTable());
             }
         });
         return paged;
